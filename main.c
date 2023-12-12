@@ -14,7 +14,7 @@ int main() {
   char filename[10];
   patient *patient;
 
-  printf("\nDigite a velocidade de impressão das Atualizações de Métricas [segundos]: ");
+  printf("\nDAtualizações de Métricas: ");
   scanf("%f", &sec);
   int sec2 = sec * 1000000;
 
@@ -53,7 +53,7 @@ int main() {
         nextID++;
     }
     insert_machines(Machine, exams, time);
-    recordExam(report, Machine, time, log);
+    Exam_Record(report, Machine, time, log);
     insert_radio(Radio, report, time); 
     remove_radio(Radio, time, log);
     if((relatorio % 10) == 0){
