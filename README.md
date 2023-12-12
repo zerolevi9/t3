@@ -19,6 +19,7 @@ Este arquivo contém as definições das estruturas de dados utilizadas no proje
 
 ## Compilação e Execução
 >[!IMPORTANT]
+>Diferentemente do ultimo código este aqui você PRECISA por o tempo em cada rotação de exames. Resumindo basta por um numero na primeira iteração que ele vai atualizar as métricas variando com o valor colocaco
 > Para compilar o projeto, você pode usar um compilador C, e executar o makefile, logo após inserir o nome do documento em _.txt_ presente neste repositório
 
 Certifique-se de que todos os arquivos (main.c, fila.c, fila.h e arquivo de texto) estejam no mesmo diretório.
