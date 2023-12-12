@@ -23,67 +23,67 @@ typedef struct LogEvent LogEvent;
 typedef struct log Log;
 typedef struct PatologyWaitTime PatologyWaitTime;
 
-patient *newPatient(char *name, char *cpf, int age, int id);
+patient *novopaciente(char *name, char *cpf, int age, int id);
 
-ListPatient *ListPatient_create();
+ListPatient *listapacientecriada();
 
-int ListPatient_size(ListPatient *list);
+int tamanholistapaciente(ListPatient *list);
 
-int ListEmpty(ListPatient *list);
+int listavazia(ListPatient *list);
 
-void ListPatient_insert(ListPatient *list, patient *patients);
+void listainserepaciente(ListPatient *list, patient *patients);
 
-int ListPatient_remove(ListPatient *list, patient *patients);
+int listaremovepaciente(ListPatient *list, patient *patients);
 
-void ListPatient_free(ListPatient *list);
+void listapacientefree(ListPatient *list);
 
-QueueExams *QueueExams_create();
+QueueExams *queuecriarexames();
 
-int QueueEmpty(QueueExams *q);
+int queuevazia(QueueExams *q);
 
-void QueueEnqueue(QueueExams *q, int newID);
+void queueenqueue(QueueExams *q, int newID);
 
-void QueueDequeue(QueueExams *q);
+void queuedequeue(QueueExams *q);
 
-void QueueFree(QueueExams *q);
+void queuefree(QueueExams *q);
 
-int ListEmpty_Machines(ListMachines *m);
+int listamaquinasvazias(ListMachines *m);
 
-ListMachines *ListMachines_create();
+ListMachines *listamaquinascriadas();
 
-void initializeMachines(int qtd, ListMachines *m);
+void inicializamaquinas(int qtd, ListMachines *m);
 
-void insert_machines(ListMachines *m, QueueExams *patient, int time);
+void inseremaquinas(ListMachines *m, QueueExams *patient, int time);
 
-int machine_disponible(ListMachines *machine);
+int maquinadisponivel(ListMachines *machine);
 
-QueueReport *QueueReport_create();
+QueueReport *criarqueuereport();
 
-int QueueReportEmpty(QueueReport *q);
+int queuereportvazio(QueueReport *q);
 
 void Exam_Record(QueueReport *report, ListMachines *m, int time, Log *log);
 
-Pathologie *Assessing_Pathologies();
+Pathologie *AssessingPathologies();
 
-int ListEmpty_Radiologist(ListRadiologist *r);
+int listavaziaradiologia(ListRadiologist *r);
 
-ListRadiologist *Radiologist_create();
+ListRadiologist *criaradiologia();
 
-void initializeRadiologist(int qtd, ListRadiologist *r);
+void inciaradiologia(int qtd, ListRadiologist *r);
 
-void insert_radio(ListRadiologist *r, QueueReport *patient, int time);
+void insereradio(ListRadiologist *r, QueueReport *patient, int time);
 
-void remove_radio(ListRadiologist *r, int time, Log *l);
+void removeradio(ListRadiologist *r, int time, Log *l);
 
-void patient_print(ListPatient *l);
+void printpaciente(ListPatient *l);
 
-void QueueExams_print(QueueExams *exams);
+void printqueueexam(QueueExams *exams);
 
-void machine_print(ListMachines *machine);
+void printmaquina(ListMachines *machine);
 
-void QueueReport_print(QueueReport *r);
+void queuereportprint(QueueReport *r);
 
-void radio_print(ListRadiologist *radio);
+void printradio(ListRadiologist *radio);
 
 int total_path(QueueReport *r, const char *p);
 
@@ -95,36 +95,36 @@ void calculateAverageReportTimePerPatology(QueueReport *report, PatologyWaitTime
 
 int examsBeyondTimeLimit(QueueReport *report, int timeLimit);
 
-void printMetrics(QueueReport *report);
+void printmetrics(QueueReport *report);
 
-Log *create_log();
+Log *createlog();
 
 void log_event(Log *log, const char *message);
 
-void save_log_to_file(const Log *log, const char *filename);
+void savelog_to_file(const Log *log, const char *filename);
 
-void listpatient_free(ListPatient *p);
+void listapaciente(ListPatient *p);
 
 void listmach_free(ListMachines *mach);
 
 void listradiologist_free(ListRadiologist *radio);
 
-void qexam_free(QueueExams *exam);
+void qexamfree(QueueExams *exam);
 
-void qreport_free(QueueReport *report);
+void qreportfree(QueueReport *report);
 
-void sleepMicroseconds(unsigned long microseconds);
+void sleepmicroseconds(unsigned long microseconds);
 
-void save_log_to_file(const Log *log, const char *filename);
+void savelog_to_file(const Log *log, const char *filename);
 
 void log_event(Log *log, const char *message);
 
-void msg_newPatient(Log *log, int time, patient *p);
+void msgnovopaciente(Log *log, int time, patient *p);
 
-void msg_record(ExamRecord *r, Log *log, int num);
+void msgrecord(ExamRecord *r, Log *log, int num);
 
-void msg_radio(Log *log, Radiologist *radio);
+void msgradio(Log *log, Radiologist *radio);
 
-void msg_Metrics(QueueReport *report, Log *log, int time);
+void msgmetrics(QueueReport *report, Log *log, int time);
 
 #endif
