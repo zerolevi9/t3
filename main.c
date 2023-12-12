@@ -20,12 +20,12 @@ int main() {
 
   printf("Digite o nome do arquivo: ");
   scanf("%s", filename);
-  ListPatient *list_patient = ListPatient_create();
-  QueueExams *exams = QueueExams_create();
-  QueueReport *report = QueueReport_create();
-  ListMachines *Machine = ListMachines_create();
-  ListRadiologist *Radio = Radiologist_create();
-  Log *log = create_log();
+  ListPatient *list_patient = listapacientecriada();
+  QueueExams *exams = queuecriarexames();
+  QueueReport *report = criarqueuereport();
+  ListMachines *Machine = listamaquinascriadas();
+  ListRadiologist *Radio = criaradiologia();
+  Log *log = createlog();
 
   FILE *arquivo = fopen(filename, "r");
 
@@ -34,8 +34,8 @@ int main() {
     return 1;
   }
 
-  initializeMachines(5, Machine);
-  initializeRadiologist(3, Radio);
+  inicializamaquinas(5, Machine);
+ iniciaradiologia(3, Radio);
 
   for(int time=1; time <= max_time; time++) {
     if (rand() % 5 + 1 == 1) {
@@ -46,32 +46,32 @@ int main() {
 
       fscanf(arquivo, "%49[^\n]\n%15[^\n]\n%d\n", name, cpf, &age);
 
-        patient = newPatient(name, cpf, age, nextID);
-        msg_newPatient(log, time, patient);
-        ListPatient_insert(list_patient, patient);
-        QueueEnqueue(exams, nextID);
+        patient = novopaciente(name, cpf, age, nextID);
+        msgnovopaciente(log, time, patient);
+        listainserepaciente(list_patient, patient);
+        queueenqueue(exams, nextID);
         nextID++;
     }
-    insert_machines(Machine, exams, time);
+    inseremaquinas(Machine, exams, time);
     Exam_Record(report, Machine, time, log);
-    insert_radio(Radio, report, time); 
-    remove_radio(Radio, time, log);
+    insereradio(Radio, report, time); 
+    removeradio(Radio, time, log);
     if((relatorio % 10) == 0){
-      printMetrics(report);           
-      sleepMicroseconds(sec2);
+      printmetrics(report);           
+      sleepmicroseconds(sec2);
     }
-    msg_Metrics(report, log, time);  
+    msgmetrics(report, log, time);  
     relatorio = relatorio + 1;
   }
 
   // Salva o log em um arquivo
   save_log_to_file(log, "log.txt");
   fclose(arquivo);
-  qexam_free(exams);
-  qreport_free(report);
+  qexamfree(exams);
+  qreportfree(report);
   listradiologist_free(Radio);
   listmach_free(Machine);
-  listpatient_free(list_patient);
+  listapaciente(list_patient);
   free(log);
 
   return 0;
