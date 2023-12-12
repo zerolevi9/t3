@@ -101,18 +101,18 @@ struct log {
   int count;
 };
 
-patient *newPatient(char name[], char cpf[], int age, int id) {
+patient *novopaciente(char name[], char cpf[], int age, int id) {
 
-  patient *newPatient = (patient *)malloc(sizeof(patient)); 
-  strcpy(newPatient->name, name);  
-  strcpy(newPatient->cpf, cpf);     
-  newPatient->age = age;            
-  newPatient->id = id;  
-  return newPatient;
+  patient *novopaciente = (patient *)malloc(sizeof(patient)); 
+  strcpy(novopaciente->name, name);  
+  strcpy(novopaciente->cpf, cpf);     
+    novopaciente->age = age;            
+    novopaciente->id = id;  
+  return novopaciente;
 };
 
 
-ListPatient *ListPatient_create() {
+ListPatient *listapacientecriada() {
 ListPatient *list = (ListPatient *)malloc(sizeof(ListPatient)); 
   list->count = 0;        
   list->first = NULL;    
@@ -120,22 +120,22 @@ ListPatient *list = (ListPatient *)malloc(sizeof(ListPatient));
   return list;           
 };
 
-int ListPatient_size(ListPatient *list) {
+int tamanholistapaciente(ListPatient *list) {
   return list->count; 
 };
 
-int ListEmpty(ListPatient *list) { 
-  return ListPatient_size(list) == 0; 
+int listavazia(ListPatient *list) { 
+  return tamanholistapaciente(list) == 0; 
 }
 
-void ListPatient_insert(ListPatient *list, patient *patients) {
+void listainserepaciente(ListPatient *list, patient *patients) {
 
   ListNode *node = (ListNode *)malloc(sizeof(ListNode));     
   node->patients = patients;                                 
   node->next = list->first;                                  
   node->prev = NULL;                                        
 
-  if (!ListEmpty(list))
+  if (!listavazia(list))
     list->first->prev = node;   
   else
     list->last = node;         
@@ -144,7 +144,7 @@ void ListPatient_insert(ListPatient *list, patient *patients) {
   list->count++;                
 }
 
-int ListPatient_remove(ListPatient *list, patient *patients) {
+int listaremovepaciente(ListPatient *list, patient *patients) {
 
   ListNode *node = list->first;      
   ListNode *prev = NULL;             
@@ -173,7 +173,7 @@ int ListPatient_remove(ListPatient *list, patient *patients) {
 }
 
 
-void ListPatient_free(ListPatient *list) {
+void lsitapaciente(ListPatient *list) {
   ListNode *node = list->first;
 
   while (node != NULL) {
@@ -184,21 +184,21 @@ void ListPatient_free(ListPatient *list) {
   free(list);
 };
 
-QueueExams *QueueExams_create() {
+QueueExams *queuecriarexames() {
   QueueExams *q = (QueueExams *)malloc(sizeof(QueueExams));   
   q->front = q->rear = NULL;                                  
   return q;                                                  
 }
 
-int QueueEmpty(QueueExams *q) { 
+int queuevazia(QueueExams *q) { 
   return q->front == NULL; 
 }
 
-void QueueEnqueue(QueueExams *q, int newID) {
+void queueenqueue(QueueExams *q, int newID) {
   QueueNode *node = (QueueNode *)calloc(1,sizeof(QueueNode));
   node->id = newID;      
   node->next = NULL;      
-  if (QueueEmpty(q))
+  if (queuevazia(q))
     q->front = node;      
   else
     q->rear->next = node; 
@@ -206,7 +206,7 @@ void QueueEnqueue(QueueExams *q, int newID) {
 }
 
 
-void QueueDequeue(QueueExams *q) {
+void queuedequeue(QueueExams *q) {
   QueueNode *temp = q->front;    
 
   if (q->front == q->rear) {
@@ -218,7 +218,7 @@ void QueueDequeue(QueueExams *q) {
 }
 
 
-void QueueFree(QueueExams *q) {
+void queuefree(QueueExams *q) {
   QueueNode *p = q->front;
 
   while (p != NULL) {          
@@ -229,11 +229,11 @@ void QueueFree(QueueExams *q) {
   free(q);
 }
 
-int ListEmpty_Machines(ListMachines *m){
+int listamaquinasvazias(ListMachines *m){
   return (m->count == 0);
 }
 
-ListMachines *ListMachines_create() {
+ListMachines *listamaquinascriadas() {
 ListMachines *list_M = (ListMachines *)malloc(sizeof(ListMachines)); 
 
   list_M->count = 0;        
@@ -243,7 +243,7 @@ ListMachines *list_M = (ListMachines *)malloc(sizeof(ListMachines));
 };
 
 
-void initializeMachines(int qtd, ListMachines *m){
+void inicializamaquinas(int qtd, ListMachines *m){
   for(int i = 0; i < qtd; i++ ){
 
     Machines *mach = (Machines *)malloc(sizeof(Machines));
@@ -252,7 +252,7 @@ void initializeMachines(int qtd, ListMachines *m){
     mach->time = 0;
     mach->next = m->first;
     mach->prev = NULL;
-    if (!ListEmpty_Machines(m))
+    if (!listamaquinasvazias(m))
       m->first->prev = mach;
     else
       m->last = mach;
@@ -266,7 +266,7 @@ void initializeMachines(int qtd, ListMachines *m){
 
 static Machines* checkMachinesAvailability(ListMachines *machine){ 
 
-  if(!ListEmpty_Machines(machine)){
+  if(!listamaquinasvazias(machine)){
     for(Machines *m = machine->first; m != NULL; m = m->next ){
       if(m->examDuration == 0 || m->patientID == 0 || m->time == 0){
         return m;
@@ -277,7 +277,7 @@ static Machines* checkMachinesAvailability(ListMachines *machine){
 }
 
 
-void insert_machines(ListMachines *m, QueueExams *patient, int time) {
+void inseremaquinas(ListMachines *m, QueueExams *patient, int time) {
   Machines *mach = checkMachinesAvailability(m);
 
   if (mach != NULL) {
@@ -290,7 +290,7 @@ void insert_machines(ListMachines *m, QueueExams *patient, int time) {
       mach->patientID = pat->id;
       mach->time = time;
 
-      QueueDequeue(patient);
+      queuedequeue(patient);
     }
   }
 }
@@ -309,9 +309,9 @@ int machine_check(ListMachines *machine, int time){
   return -1;
 }
 
-int machine_disponible(ListMachines * machine){
+int maquinadisponivel(ListMachines * machine){
   int count = 0;
-  if(!ListEmpty_Machines(machine)){
+  if(!listamaquinasvazias(machine)){
       for(Machines *m = machine->first; m != NULL; m = m->next ){
         if(m->examDuration == 0 || m->patientID == 0 || m->time == 0){
           count++;
@@ -321,12 +321,12 @@ int machine_disponible(ListMachines * machine){
   return count;
 }
 
-int QueueReportEmpty(QueueReport *report) { 
+int queuereportvazio(QueueReport *report) { 
   return report->front == NULL; 
 }
 
 
-QueueReport *QueueReport_create() {
+QueueReport *criarqueuereport() {
   QueueReport *report = (QueueReport *)malloc(sizeof(QueueReport));
   report->front = report->rear = NULL; 
   return report;
@@ -340,18 +340,18 @@ void Exam_Record(QueueReport *report, ListMachines *m, int time, Log *log) {
     ExamRecord *record = (ExamRecord *)malloc(sizeof(ExamRecord));
     record->finishTime = time;
     record->id = check;
-    record->path = Assessing_Pathologies();
+    record->path = AssessingPathologies();
     record->next = NULL;
 
     /* Adicionando na fila de registro */
-    if (QueueReportEmpty(report)) {
+    if (queuereportvazio(report)) {
       report->front = report->rear = record;
     } else {
       report->rear->next = record;
       report->rear = record;
     }
 
-    msg_record(record, log, machine_disponible(m));
+    msgrecord(record, log, maquinadisponivel(m));
     check = machine_check(m, time);
   }
 }
@@ -376,7 +376,7 @@ static Pathologie *CreatePathologie(char condition[20], int severity) {
   return p;
 }
 
-Pathologie *Assessing_Pathologies() {
+Pathologie *AssessingPathologies() {
   int numb_random = rand() % 100 + 1;
   char condition[20];
 
@@ -397,11 +397,11 @@ Pathologie *Assessing_Pathologies() {
 }
 
 
-int ListEmpty_Radiologist(ListRadiologist *r){
+int listavaziaradiologia(ListRadiologist *r){
   return (r->count == 0);
 }
 
-ListRadiologist *Radiologist_create() {
+ListRadiologist *criaradiologia() {
   ListRadiologist *list_R = (ListRadiologist *)malloc(sizeof(ListRadiologist));
 
   list_R->count = 0;
@@ -412,7 +412,7 @@ ListRadiologist *Radiologist_create() {
 }
 
 
-void initializeRadiologist(int qtd, ListRadiologist *r) {
+void iniciaradiologia(int qtd, ListRadiologist *r) {
   for (int i = 0; i < qtd; i++) {
     Radiologist *rad = (Radiologist *)malloc(sizeof(Radiologist));
     rad->occupation = 0;
@@ -422,7 +422,7 @@ void initializeRadiologist(int qtd, ListRadiologist *r) {
     rad->next = r->first;
     rad->prev = NULL;
 
-    if (!ListEmpty_Radiologist(r)) {
+    if (!listavaziaradiologia(r)) {
       r->first->prev = rad;
     } else {
       r->last = rad;
@@ -437,7 +437,7 @@ void initializeRadiologist(int qtd, ListRadiologist *r) {
 
 static Radiologist* checkRadiologistAvailability(ListRadiologist *radio){ 
 
-  if(!ListEmpty_Radiologist(radio)){
+  if(!listavaziaradiologia(radio)){
     for(Radiologist *r = radio->first; r != NULL; r = r->next ){
       if(r->occupation == 0){
         return r;
@@ -448,7 +448,7 @@ static Radiologist* checkRadiologistAvailability(ListRadiologist *radio){
 }
 
 
-void insert_radio(ListRadiologist *r, QueueReport *patient, int time) {
+void insereradio(ListRadiologist *r, QueueReport *patient, int time) {
   Radiologist *radio = checkRadiologistAvailability(r);
 
   if (radio != NULL) {
@@ -467,10 +467,10 @@ void insert_radio(ListRadiologist *r, QueueReport *patient, int time) {
 }
 
 
-void remove_radio(ListRadiologist *r, int time, Log *l) {
+void removeradio(ListRadiologist *r, int time, Log *l) {
   for (Radiologist *radio = r->first; radio != NULL; radio = radio->next) {
     if (time == (radio->durationRad + radio->time)) {
-      msg_radio(l, radio);
+      msgradio(l, radio);
       radio->durationRad = 0;
       radio->occupation = 0;
       radio->patientID = 0;
@@ -482,7 +482,7 @@ void remove_radio(ListRadiologist *r, int time, Log *l) {
 
 
 
-void patient_print(ListPatient *l) {
+void printpaciente(ListPatient *l) {
   for (ListNode *p = l->first; p != NULL; p = p->next) {
     printf("Name: %s\n", p->patients->name);
     printf("CPF: %s\n", p->patients->cpf);
@@ -495,14 +495,14 @@ void patient_print(ListPatient *l) {
 
 
 
-void QueueExams_print(QueueExams *exams){
+void printqueueexam(QueueExams *exams){
 
   for(QueueNode *patient = exams->front; patient != NULL; patient = patient->next  ){
     printf("%d ", patient->id);
   }
 }
 
-void machine_print(ListMachines *machine){
+void printmaquina(ListMachines *machine){
   for(Machines *m = machine->first; m != NULL; m = m->next ){
     int ID = m->patientID;
     printf("Duração do exame: %d ID: %d Horario: %d Quantidade de maquinas: %d \n", m->examDuration, ID, m->time, machine->count);
@@ -510,14 +510,14 @@ void machine_print(ListMachines *machine){
   }
 }
 
-void QueueReport_print(QueueReport *r) {
+void queuereportprint(QueueReport *r) {
   for (ExamRecord *rec = r->front; rec != NULL; rec = rec->next){
 
     printf("ID do paciente: %d Horário: %d Condição: %s\n", rec->id, rec->finishTime, rec->path->condition);
   }
 }
 
-void radio_print(ListRadiologist *radio){
+void printradio(ListRadiologist *radio){
   for(Radiologist *r = radio->first; r != NULL; r = r->next ){
     int ID = r->patientID;
     printf("Duração do exame: %d ID: %d Horario: %d Quantidade de maquinas: %d \n", r->durationRad, ID, r->time, radio->count);
@@ -526,7 +526,7 @@ void radio_print(ListRadiologist *radio){
 }
 
 float averageReportTime(QueueReport *report) {
-    if (QueueReportEmpty(report)) {
+    if (queuereportvazio(report)) {
         return 0.0;
     }
 
@@ -542,7 +542,7 @@ float averageReportTime(QueueReport *report) {
 }
 
 void averageReportTimePerPatology(QueueReport *report, PatologyWaitTime *patologyWaitTimes, int numPatologies) {
-    if (QueueReportEmpty(report)) {
+    if (queuereportvazio(report)) {
         return;
     }
 
@@ -571,7 +571,7 @@ int examsBeyondTimeLimit(QueueReport *report, int timeLimit) {
 }
 
 
-void printMetrics(QueueReport *report) {
+void printmetrics(QueueReport *report) {
     printf("\n*Tempo médio de laudo: %.2ft\n", averageReportTime(report));
 
     const char *patologies[] = {"Saúde Normal", "Bronquite", "Pneumonia", "Fratura de Fêmur", "Apendicite"};
@@ -598,7 +598,7 @@ void printMetrics(QueueReport *report) {
     printf("Exames realizados após o limite (%dt): %d\n", timeLimit, examsBeyondLimit);
 }
 
-void listpatient_free(ListPatient *p) {
+void listapaciente(ListPatient *p) {
     ListNode *node = p->first;
     while (node != NULL) {
         ListNode *temp = node->next;
@@ -634,7 +634,7 @@ void listradiologist_free(ListRadiologist *r) {
     }
     free(r);
 }
-void qexam_free(QueueExams *q) {
+void qexamfree(QueueExams *q) {
     if (q == NULL) {
         return;  
     }
@@ -652,7 +652,7 @@ void examRecord_free(ExamRecord *record) {
     free(record);
 }
 
-void qreport_free(QueueReport *report) {
+void qreportfree(QueueReport *report) {
     ExamRecord *record = report->front;
     while (record != NULL) {
         ExamRecord *temp = record->next;
@@ -662,7 +662,7 @@ void qreport_free(QueueReport *report) {
     free(report);
 }
 
-void sleepMicroseconds(unsigned long microseconds) {
+void sleepmicroseconds(unsigned long microseconds) {
     struct timespec req;
     req.tv_sec = microseconds / 1000000;
     req.tv_nsec = (microseconds % 1000000) * 1000;
@@ -670,7 +670,7 @@ void sleepMicroseconds(unsigned long microseconds) {
 }
 
 
-Log* create_log() {
+Log* createlog() {
     Log *l = (Log *)malloc(sizeof(Log));
     l->count = 0;
     l->events[0].message[0] = '\0';
@@ -706,7 +706,7 @@ void save_log_to_file(const Log *log, const char *filename) {
     }
 }
 
-void msg_newPatient(Log *log, int time, patient *p) {
+void msgnovopaciente(Log *log, int time, patient *p) {
     char entry[255]; 
 
     snprintf(entry, sizeof(entry), "%dt: Entrada de novo paciente no hospital. ID:%d   Nome:%s    CPF:%s  Idade:%d]\n", 
@@ -714,9 +714,9 @@ void msg_newPatient(Log *log, int time, patient *p) {
     log_event(log, entry);
 }
 
-void msg_record(ExamRecord *r, Log *log, int num) {
+void msgrecord(ExamRecord *r, Log *log, int num) {
     if (r == NULL || log == NULL) {
-        printf("Erro: Ponteiro nulo detectado em msg_record.\n");
+        printf("Erro: Ponteiro nulo detectado em msgrecord.\n");
         return;
     }
 
@@ -726,14 +726,14 @@ void msg_record(ExamRecord *r, Log *log, int num) {
     log_event(log, entry);
 }
 
-void msg_radio(Log *log, Radiologist *radio){
+void msgradio(Log *log, Radiologist *radio){
 
   char entry[255];
   snprintf(entry, sizeof(entry), "[%dt : evento] Laudo de Exame do paciente de ID %d finalizado pelo radiologista. [Duração do laudo: %dt]\n", (radio->durationRad + radio->time), radio->patientID, radio->durationRad);
   log_event(log,entry);
 }
 
-void msg_Metrics(QueueReport *report, Log *log, int time) {
+void msgmetrics(QueueReport *report, Log *log, int time) {
     char entry[500];
     float storage;
 
