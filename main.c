@@ -14,7 +14,7 @@ int main() {
   char filename[10];
   patient *patient;
 
-  printf("\nDAtualizações de Métricas: ");
+  printf("\nAtualizações de Métricas: ");
   scanf("%f", &sec);
   int sec2 = sec * 1000000;
 
