@@ -572,7 +572,7 @@ int examsBeyondTimeLimit(QueueReport *report, int timeLimit) {
 
 
 void printMetrics(QueueReport *report) {
-    printf("\nTempo médio de laudo: %.2ft\n", averageReportTime(report));
+    printf("\n*Tempo médio de laudo: %.2ft\n", averageReportTime(report));
 
     const char *patologies[] = {"Saúde Normal", "Bronquite", "Pneumonia", "Fratura de Fêmur", "Apendicite"};
     int numPatologies = sizeof(patologies) / sizeof(patologies[0]);
@@ -721,7 +721,7 @@ void msg_record(ExamRecord *r, Log *log, int num) {
     }
 
     char entry[255];
-    snprintf(entry, sizeof(entry), "[TEMPO %dt : event] Exame do paciente de ID %d realizado. [Condição: %s    Qtd. de Máquinas Disponíveis: %d]\n",
+    snprintf(entry, sizeof(entry), "[%dt : evento] Exame do paciente de ID %d realizado. [Condição: %s    Quantidade de Máquinas Disponíveis: %d]\n",
             r->finishTime, r->id, r->path->condition, num);
     log_event(log, entry);
 }
@@ -729,7 +729,7 @@ void msg_record(ExamRecord *r, Log *log, int num) {
 void msg_radio(Log *log, Radiologist *radio){
 
   char entry[255];
-  snprintf(entry, sizeof(entry), "[TEMPO %dt : event] Laudo de Exame do paciente de ID %d finalizado pelo radiologista. [Duração do laudo: %dt]\n", (radio->durationRad + radio->time), radio->patientID, radio->durationRad);
+  snprintf(entry, sizeof(entry), "[%dt : evento] Laudo de Exame do paciente de ID %d finalizado pelo radiologista. [Duração do laudo: %dt]\n", (radio->durationRad + radio->time), radio->patientID, radio->durationRad);
   log_event(log,entry);
 }
 
@@ -765,11 +765,11 @@ void msg_Metrics(QueueReport *report, Log *log, int time) {
     entry[0] = '\0';
 
     if ((storage = averageReportTime(report)) != 0) {
-        snprintf(entry + strlen(entry), sizeof(entry) - strlen(entry), "[TEMPO %dt : metric] (TML) Tempo médio de laudo: %.2ft\n", time, storage);
+        snprintf(entry + strlen(entry), sizeof(entry) - strlen(entry), "[%dt : metric]Tempo médio de laudo: %.2ft\n", time, storage);
     }
 
     if (examsBeyondLimit != 0) {
-        snprintf(entry + strlen(entry), sizeof(entry) - strlen(entry), "[TEMPO %dt : metric] (QEL) Qtd. de exames realizados após o limite de tempo estabelecido (Tempo limite = %dt): %d\n", 
+        snprintf(entry + strlen(entry), sizeof(entry) - strlen(entry), "[%dt : metric]Quantidade de exames realizados após o limite de tempo estabelecido (%dt): %d\n", 
                 time, timeLimit, examsBeyondLimit);
     }
 
